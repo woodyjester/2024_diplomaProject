@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Template List</title>
+</head>
+<body>
+    <h1>Select a Template to Download</h1>
+    <ul>
+        {% for template in templates %}
+            <li><a href="{% url 'download_template' template %}">{{ template }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
