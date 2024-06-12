@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Rendered Files{% endblock %}
+
+{% block sidebar %}
+    <div class="bg-white p-5 shadow-lg rounded-lg">
+        <h2 class="font-bold text-lg mb-4 border-b pb-2">Rendered Files</h2>
+        <ul class="space-y-2">
+            {% for render in renders %}
+                <li class="flex justify-between items-center bg-gray-100 p-2 rounded hover:bg-gray-200 transition duration-150 ease-in-out">
+                <span class="font-medium text-gray-700">
+                    {{ render.datasource.name }}[{{ render.sheet }}] => {{ render.template.name }} <br>
+                    <small class="text-gray-500">{{ render.uploaded_at|date:"d.m.Y H:i" }}</small>
+                </span>
+                    <a href="{% url 'app:download' type='render' id=render.id %}"
+                       class="text-blue-500 hover:text-blue-700">
+                        Download
+                    </a>
+                </li>
+            {% endfor %}
+            {% if renders.count == 0 %}
+                <li class="text-gray-500">No rendered files available.</li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-lg mx-auto bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold mb-5">Add New Rendered File</h2>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}"
+                           class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    {{ field|add_class:'mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500' }}
+                    {% if field.help_text %}
+                        <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit"
+                    class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Submit
+            </button>
+        </form>
+    </div>
+{% endblock %}

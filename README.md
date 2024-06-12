@@ -1,2 +1,0 @@
-# 2024_diplomaProject
-ProtocolAutomation
